@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const FirstPage = () => {
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Load form data from localStorage on component mount
-    const savedFormData = JSON.parse(localStorage.getItem('formData') as string);
+    const savedFormData = JSON.parse(localStorage.getItem('formData') || '{}');
     if (savedFormData) {
       setFormData(savedFormData);
     }
@@ -38,7 +39,7 @@ const FirstPage = () => {
       phone: '',
       email: '',
     });
-    // You can perform further actions with formData here
+    navigate('/secondPage');
   };
 
   return (
