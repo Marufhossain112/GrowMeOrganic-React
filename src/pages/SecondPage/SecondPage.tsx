@@ -23,7 +23,6 @@ const SecondPage = () => {
         <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", justifyContent: "center", alignItems: "center", marginTop: "2rem", marginBottom: "10rem" }}>
             <DataGridDemo />
             <DepartmentSelection />
-            {/* <DesignDepartment /> */}
         </Box>
     );
 };

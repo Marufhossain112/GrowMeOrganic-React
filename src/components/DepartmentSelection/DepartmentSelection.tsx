@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
+
 function ParentWithThreeChildren({ label, checked, onChange, child1Label, child2Label, child3Label, child1Checked, child2Checked, child3Checked, onChild1Change, onChild2Change, onChild3Change, expanded, onToggle }: any) {
     return (
         <div>
@@ -44,53 +45,65 @@ function ParentWithThreeChildren({ label, checked, onChange, child1Label, child2
     );
 }
 
-function ParentWithTwoChildren({ label, checked, onChange, child1Label, child2Label, child1Checked, child2Checked, onChild1Change, onChild2Change, expanded, onToggle }: any) {
+function ParentWithTwoChildren() {
+    const [checked, setChecked] = React.useState([false, false]);
+    const [expandChildren, setExpandChildren] = React.useState(false);
+
+    const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChecked([event.target.checked, event.target.checked]);
+    };
+
+    const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChecked([event.target.checked, checked[1]]);
+    };
+
+    const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChecked([checked[0], event.target.checked]);
+    };
+
+    const handleExpandCollapse = () => {
+        setExpandChildren(!expandChildren);
+    };
+
+    const children = (
+        <Collapse in={expandChildren}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+                <FormControlLabel
+                    label="support"
+                    control={<Checkbox checked={checked[0]} onChange={handleChange2} />}
+                />
+                <FormControlLabel
+                    label="customer_success"
+                    control={<Checkbox checked={checked[1]} onChange={handleChange3} />}
+                />
+            </Box>
+        </Collapse>
+    );
+
     return (
         <div>
-            <FormControlLabel
-                label={label}
-                control={
-                    <Checkbox
-                        checked={checked[0] && checked[1]}
-                        indeterminate={checked[0] !== checked[1]}
-                        onChange={onChange}
-                    />
-                }
-            />
-            <IconButton onClick={onToggle} aria-label="Toggle">
-                {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            </IconButton>
-            <Collapse in={expanded}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-                    <FormControlLabel
-                        label={child1Label}
-                        control={<Checkbox checked={child1Checked} onChange={onChild1Change} />}
-                    />
-                    <FormControlLabel
-                        label={child2Label}
-                        control={<Checkbox checked={child2Checked} onChange={onChild2Change} />}
-                    />
-                </Box>
-            </Collapse>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <FormControlLabel
+                    label="customer_service"
+                    control={
+                        <Checkbox
+                            checked={checked[0] && checked[1]}
+                            indeterminate={checked[0] !== checked[1]}
+                            onChange={handleChange1}
+                        />
+                    }
+                />
+                <IconButton onClick={handleExpandCollapse} aria-label="Toggle">
+                    {expandChildren ? <ExpandMoreIcon /> : <ExpandMoreIcon />}
+                </IconButton>
+            </Box>
+            {children}
         </div>
     );
 }
 
+
 export default function MultipleParents() {
-    const [customerServiceChecked, setCustomerServiceChecked] = React.useState([false, false]);
-    const [customerServiceExpanded, setCustomerServiceExpanded] = React.useState(false);
-
-    const handleCustomerServiceChange1 = (event: any) => {
-        setCustomerServiceChecked([event.target.checked, event.target.checked]);
-    };
-
-    const handleCustomerServiceChange2 = (event: any) => {
-        setCustomerServiceChecked([customerServiceChecked[0], event.target.checked]);
-    };
-
-    const handleCustomerServiceToggle = () => {
-        setCustomerServiceExpanded(!customerServiceExpanded);
-    };
 
     const [designExpanded, setDesignExpanded] = React.useState(false);
     const [designChecked, setDesignChecked] = React.useState([false, false, false]);
@@ -117,19 +130,7 @@ export default function MultipleParents() {
 
     return (
         <div>
-            <ParentWithTwoChildren
-                label="customer_service"
-                checked={customerServiceChecked}
-                onChange={handleCustomerServiceChange1}
-                child1Label="support"
-                child1Checked={customerServiceChecked[0]}
-                onChild1Change={handleCustomerServiceChange1}
-                child2Label="customer_success"
-                child2Checked={customerServiceChecked[1]}
-                onChild2Change={handleCustomerServiceChange2}
-                expanded={customerServiceExpanded}
-                onToggle={handleCustomerServiceToggle}
-            />
+            <ParentWithTwoChildren />
 
             <ParentWithThreeChildren
                 label="design"
