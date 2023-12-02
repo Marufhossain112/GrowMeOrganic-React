@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import DataGridDemo from "../../components/PostData/PostData";
 import { Box } from "@mui/material";
+import DepartmentSelection from "../../components/DepartmentSelection/DepartmentSelection";
 
 const SecondPage = () => {
     const navigate = useNavigate();
-   
+
     setTimeout(() => {
         const savedFormData = JSON.parse(localStorage.getItem('formData') || '{}');
         console.log({ savedFormData });
@@ -20,8 +20,10 @@ const SecondPage = () => {
     }, 1000);
     // console.log(postData);
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", justifyContent: "center", alignItems: "center", marginTop: "2rem" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", justifyContent: "center", alignItems: "center", marginTop: "2rem", marginBottom: "10rem" }}>
             <DataGridDemo />
+            <DepartmentSelection />
+            {/* <DesignDepartment /> */}
         </Box>
     );
 };
